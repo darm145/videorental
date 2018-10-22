@@ -26,6 +26,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ClienteMapper;
+import edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.pdsw.samples.entities.Item;
+import edu.eci.pdsw.samples.entities.TipoItem;
+
 /**
  *
  * @author hcadavid
@@ -56,19 +65,26 @@ public class MyBatisExample {
      * Programa principal de ejempo de uso de MyBATIS
      * @param args
      * @throws SQLException 
+     * @throws ParseException 
      */
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]) throws SQLException, ParseException {
         SqlSessionFactory sessionfact = getSqlSessionFactory();
 
         SqlSession sqlss = sessionfact.openSession();
 
         
         //Crear el mapper y usarlo: 
-        //ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
-        //cm...
+        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);
+        ItemMapper im=sqlss.getMapper(ItemMapper.class);
         
         
-        
+        //System.out.println(cm.consultarClientes());
+        //System.out.println(cm.consultarCliente(1026585669));
+        //cm.agregarItemRentadoACliente(5, 1222222222, new SimpleDateFormat("dd/MM/yyyy").parse("11/11/2018"), new SimpleDateFormat("dd/MM/yyyy").parse("11/12/2018"));
+        Item temp=new Item(new TipoItem(123532,"algun tipo") , 9812354,"algun item", "item de algo",
+        		new SimpleDateFormat("dd/MM/yyyy").parse("1/11/2018"), 20, "asd", "accion") ;
+        //im.insertarItem(temp);
+        System.out.println(im.consultarItem(9812354));
         sqlss.commit();
         
         
@@ -80,3 +96,4 @@ public class MyBatisExample {
 
 
 }
+

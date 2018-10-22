@@ -4,8 +4,65 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ItemMapper">
-
-
+<insert parameterType="map" id="insertarItem" >
+		insert into VI_ITEMS (
+							id,
+							nombre,
+							descripcion,
+							fechalanzamiento,
+							tarifaxdia,
+							formatorenta,
+							genero,
+							TIPOITEM_id)
+		 VALUES (#{item.id},
+		         #{item.nombre},
+		         #{item.descripcion},
+				 #{item.fechaLanzamiento},
+				 #{item.tarifaxDia},
+				#{item.formatoRenta},
+				#{item.genero},
+				#{item.tipo.id});
+</insert>
+<update parameterType="map" id="updateTarifa">
+	UPDATE VI_ITEMS SET tarifaxdia=#{tarifa} WHERE id=#{id};
+</update>
+<select parameterType="map" id="consultarItem" resultMap="ItemResult2">
+		SELECT * FROM VI_ITEMS WHERE id=#{Item}; 
+</select>
+<select parameterType="map" id="consultarItems" resultMap="ItemResult2">
+		SELECT * FROM VI_ITEMS; 
+</select>
+<select parameterType="map" id="consultarItemsDisponibles" resultMap="ItemResult2">
+		SELECT ir.id,
+			   ir.nombre,
+			   ir.descripcion,
+			   ir.fechalanzamiento,
+			   ir.tarifaxdia,
+			   ir.formatorenta,
+			   ir.genero,
+			   ir.TIPOITEM_id
+		FROM VI_ITEMS as it JOIN VI_ITEMRENTADO as ir WHERE NOT (current_date BETWEEN ir.fechainiciorenta and ir.fechafinrenta) ; 
+</select>
+<resultMap type='Item' id='ItemResult'>
+    <id property='id' column='ITEM_ID'/>
+    <result property='nombre' column='ITEM_NOMBRE'/>
+    <result property='descripcion' column='ITEM_DESCRIPCION'/>  
+    <result property='fechaLanzamiento' column='fechalanzamiento'/>  
+    <result property='tarifaxDia' column='tarifaxdia'/>  
+    <result property='formatoRenta' column='formatorenta'/>
+    <result property='genero' column='genero'/>   
+    <association  property='tipo' javaType='TipoItem'></association >
+</resultMap>
+     <resultMap type='Item' id='ItemResult2'>
+    <id property='id' column='id'/>
+    <result property='nombre' column='nombre'/>
+    <result property='descripcion' column='descripcion'/>  
+    <result property='fechaLanzamiento' column='fechalanzamiento'/>  
+    <result property='tarifaxDia' column='tarifaxdia'/>  
+    <result property='formatoRenta' column='formatorenta'/>
+    <result property='genero' column='genero'/>   
+    <association  property='tipo' javaType='TipoItem'></association >
+</resultMap>     	
     
     
 </mapper>
