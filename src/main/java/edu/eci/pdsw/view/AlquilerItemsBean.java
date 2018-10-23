@@ -23,11 +23,11 @@ public class AlquilerItemsBean {
 	
 	
 	
-	public List<ItemRentado> getItems() throws ExcepcionServiciosAlquiler{
+	public List<ItemRentado> getItems() throws Exception{
 		try {
             return serviciosAlquiler.consultarItemsCliente(documento);
             
-        } catch (ExcepcionServiciosAlquiler e) {
+        } catch (Exception e) {
             throw e;
         }
 		
